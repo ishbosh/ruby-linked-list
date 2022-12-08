@@ -4,6 +4,7 @@ require_relative 'node'
 
 # Class for creating linked lists and methods to manipulate them.
 class LinkedList
+  include Enumerable
   attr_accessor :head, :tail
 
   def initialize
@@ -27,6 +28,8 @@ class LinkedList
 
   # prepend(value) method
   def prepend(value)
+    # self.tail = head if tail.nil?
+    # self.head = Node.new(value, head)
     node = Node.new(value)
     if head.nil?
       self.head = node
@@ -85,14 +88,13 @@ class LinkedList
   end
 
   # pop method
-  def pop
+  def pop(node = head)
     if tail.nil? || tail.eql?(head)
       self.head = nil
       self.tail = nil
       return
     end
 
-    node = head
     loop do
       node.next_node = nil if node.next_node.eql?(tail)
       break if node.next_node.nil?
@@ -140,17 +142,20 @@ class LinkedList
 
   # to_s method
   def to_s
-    return 'nil' if head.nil?
+    # return 'nil' if head.nil?
 
-    str_sum = "( #{head.value} ) "
-    node = head.next_node
-    loop do
-      return str_sum += '-> nil' if node.nil?
+    # str_sum = "( #{head.value} ) "
+    # node = head.next_node
+    # loop do
+    #   return str_sum += '-> nil' if node.nil?
 
-      str_sum += "-> ( #{node.value} ) "
-      node = node.next_node
-    end
-    str_sum
+    #   str_sum += "-> ( #{node.value} ) "
+    #   node = node.next_node
+    # end
+    # str_sum
+    values = map { |value| "( #{value} )" }
+    values << "nil"
+    values.join(" -> ")
   end
 
   # Extra Credit:
@@ -167,5 +172,15 @@ class LinkedList
     node_before = at(index - 1)
     node_after = at(index).next_node
     node_before.next_node = node_after
+  end
+
+  private
+
+  def each
+    node = head
+    until node.nil?
+      yield node.value
+      node = node.next_node
+    end
   end
 end
