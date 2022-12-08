@@ -117,20 +117,12 @@ class LinkedList
 
   # find(value) method
   def find(value)
-    return nil if head.nil?
-
-    return 0 if head.value == value
-
-    node = head.next_node
-    index = 1
-    loop do
-      return nil if node.nil?
-
-      return index if node.value == value
-
-      node = node.next_node
+    index = 0
+    self.each do |node| 
+      return index if node.value.eql?(value)
       index += 1
     end
+    nil
   end
 
   # to_s method
