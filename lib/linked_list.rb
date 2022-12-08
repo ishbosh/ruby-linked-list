@@ -33,7 +33,10 @@ class LinkedList
   end
 
   # size method 
-  # utilizes the enumerable size method
+  # utilizes the enumerable count method
+  def size
+    count
+  end
 
   # head method
   # implemented as attr_accessor
@@ -43,48 +46,35 @@ class LinkedList
 
   # at(index) method
   def at(index)
-    size = self.size
-    return head.value if index.zero? || index == -size
-
-    return tail.value if index == -1
-
-    return nil if index >= size || index < -size
-
-    node = head.next_node
-    pointer = 1
-    loop do
-      if index < -1
-        break if pointer == size + index
-      elsif pointer == index
-        break
-      end
-      node = node.next_node
-      pointer += 1
+    list_size = size
+    each_with_index do |node, i|
+      return node.value if i.eql?(list_size + index) # allow negative indexing
+      return node.value if i.eql?(index)
     end
-    node
+    nil      
   end
 
   # pop method
-  def pop(node = head)
-    if tail.nil? || tail.eql?(head)
-      self.head = nil
-      self.tail = nil
-      return
-    end
+  # def pop(node = head)
+  #   if tail.nil? || tail.eql?(head)
+  #     self.head = nil
+  #     self.tail = nil
+  #     return
+  #   end
 
-    self.each do |node|
-      if node.next_node.eql?(tail) 
-        node.next_node = nil 
-        self.tail = node
-    loop do
-      node.next_node = nil if node.next_node.eql?(tail)
-      break if node.next_node.nil?
+  #   each do |node|
+  #     if node.next_node.eql?(tail) 
+  #       node.next_node = nil 
+  #       self.tail = node
+  #   loop do
+  #     node.next_node = nil if node.next_node.eql?(tail)
+  #     break if node.next_node.nil?
 
-      node = node.next_node
-    end
-    self.tail = node
-    nil
-  end
+  #     node = node.next_node
+  #   end
+  #   self.tail = node
+  #   nil
+  # end
 
   # contains?(value) method
   # returns true if the passed in value is in the list, otherwise returns false
@@ -93,7 +83,7 @@ class LinkedList
 
     return true if head.value.eql?(value) || tail.value.eql?(value)
 
-    self.each { |node| return true if node.value.eql?(value) }
+    each { |node| return true if node.value.eql?(value) }
     false
   end
 
@@ -101,7 +91,7 @@ class LinkedList
   # returns the index of the node containing value, or nil if not found
   def find(value)
     index = 0
-    self.each do |node| 
+    each do |node| 
       return index if node.value.eql?(value)
       index += 1
     end
@@ -136,11 +126,21 @@ class LinkedList
   # Enumerable method implementation #
 
   def each
-    return self.to_enum unless block_given?
+    return to_enum(:each) unless block_given?
     node = head
     until node.nil?
       yield node
       node = node.next_node
+    end
+  end
+
+  def each_with_index
+    return to_enum(:each_with_index) unless block_given?
+
+    index = 0
+    each do |node|
+      yield(node, index)
+      index += 1
     end
   end
 
