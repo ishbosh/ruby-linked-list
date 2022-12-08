@@ -56,10 +56,13 @@ class LinkedList
   end
 
   # pop method
+  # removes the last element from the list (returns the element removed)
   def pop
+    popped = at(-1)
     self.head = nil if tail.nil?
     self.tail = at(-2)
     tail.next_node = nil unless tail.nil?
+    popped
   end
 
   # contains?(value) method
