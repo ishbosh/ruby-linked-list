@@ -111,7 +111,7 @@ class LinkedList
 
     return true if head.value == value || tail.value == value
 
-    node = head
+    self.each { |node| return true if }
     loop do
       break if node.next_node.nil?
 
@@ -142,18 +142,7 @@ class LinkedList
 
   # to_s method
   def to_s
-    # return 'nil' if head.nil?
-
-    # str_sum = "( #{head.value} ) "
-    # node = head.next_node
-    # loop do
-    #   return str_sum += '-> nil' if node.nil?
-
-    #   str_sum += "-> ( #{node.value} ) "
-    #   node = node.next_node
-    # end
-    # str_sum
-    values = map { |value| "( #{value} )" }
+    values = map { |node| "( #{node.value} )" }
     values << "nil"
     values.join(" -> ")
   end
@@ -179,7 +168,7 @@ class LinkedList
   def each
     node = head
     until node.nil?
-      yield node.value
+      yield node
       node = node.next_node
     end
   end
