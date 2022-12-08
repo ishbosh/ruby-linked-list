@@ -1,3 +1,8 @@
+# frozen_string_literal: true
+
+require_relative 'node'
+
+# Class for creating linked lists and methods to manipulate them.
 class LinkedList
   attr_accessor :head, :tail
 
@@ -143,15 +148,6 @@ class LinkedList
   end
 end
 
-class Node
-  attr_accessor :value, :next_node
-#value method
-#link to the next node
-## Set both as nil by default
-  def initialize(value = nil, next_node = nil)
-    @value = value
-    @next_node = next_node
-  end
-end
+
 
 list = LinkedList.new
