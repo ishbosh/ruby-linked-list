@@ -7,9 +7,9 @@ class LinkedList
   include Enumerable
   attr_accessor :head, :tail
 
-  def initialize(head = nil, tail = nil)
-    @head = nil
-    @tail = nil
+  def initialize(head = nil)
+    @head = head
+    @tail = at(-1)
   end
 
   # append(value) method
@@ -45,36 +45,22 @@ class LinkedList
   # implemented as attr_accessor
 
   # at(index) method
+  # returns the node at the given index
   def at(index)
     list_size = size
     each_with_index do |node, i|
-      return node.value if i.eql?(list_size + index) # allow negative indexing
-      return node.value if i.eql?(index)
+      return node if i.eql?(list_size + index) # allow negative indexing
+      return node if i.eql?(index)
     end
     nil      
   end
 
   # pop method
-  # def pop(node = head)
-  #   if tail.nil? || tail.eql?(head)
-  #     self.head = nil
-  #     self.tail = nil
-  #     return
-  #   end
-
-  #   each do |node|
-  #     if node.next_node.eql?(tail) 
-  #       node.next_node = nil 
-  #       self.tail = node
-  #   loop do
-  #     node.next_node = nil if node.next_node.eql?(tail)
-  #     break if node.next_node.nil?
-
-  #     node = node.next_node
-  #   end
-  #   self.tail = node
-  #   nil
-  # end
+  def pop
+    self.head = nil if tail.nil?
+    self.tail = at(-2)
+    tail.next_node = nil unless tail.nil?
+  end
 
   # contains?(value) method
   # returns true if the passed in value is in the list, otherwise returns false
