@@ -111,14 +111,7 @@ class LinkedList
 
     return true if head.value == value || tail.value == value
 
-    self.each { |node| return true if }
-    loop do
-      break if node.next_node.nil?
-
-      return true if node.value == value
-
-      node = node.next_node
-    end
+    self.each { |node| return true if node.value.eql?(value) }
     false
   end
 
