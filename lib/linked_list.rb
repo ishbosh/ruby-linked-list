@@ -7,7 +7,7 @@ class LinkedList
   include Enumerable
   attr_accessor :head, :tail
 
-  def initialize
+  def initialize(head = nil, tail = nil)
     @head = nil
     @tail = nil
   end
@@ -15,48 +15,25 @@ class LinkedList
   # append(value) method
   def append(value)
     node = Node.new(value)
-    if head.nil?
-      self.head = node
-    elsif tail.nil?
+    return self.head = node if head.nil?
+    
+    if tail.nil?
       self.tail = node
       head.next_node = tail
-    else
-      tail.next_node = node
-      self.tail = node
+      return
     end
+    tail.next_node = node
+    self.tail = node
   end
 
   # prepend(value) method
   def prepend(value)
-    # self.tail = head if tail.nil?
-    # self.head = Node.new(value, head)
-    node = Node.new(value)
-    if head.nil?
-      self.head = node
-    elsif tail.nil?
-      self.tail = head
-      self.head = node
-      head.next_node = tail
-    else
-      node.next_node = head
-      self.head = node
-    end
+    self.tail = head if tail.nil?
+    self.head = Node.new(value, head)
   end
 
-  # size method
-  def size
-    return 0 if head.nil?
-
-    node = head.next_node
-    count = 1
-    loop do
-      break if node.nil?
-
-      node = node.next_node
-      count += 1
-    end
-    count
-  end
+  # size method 
+  # utilizes the enumerable size method
 
   # head method
   # implemented as attr_accessor
@@ -95,6 +72,10 @@ class LinkedList
       return
     end
 
+    self.each do |node|
+      if node.next_node.eql?(tail) 
+        node.next_node = nil 
+        self.tail = node
     loop do
       node.next_node = nil if node.next_node.eql?(tail)
       break if node.next_node.nil?
@@ -106,16 +87,18 @@ class LinkedList
   end
 
   # contains?(value) method
+  # returns true if the passed in value is in the list, otherwise returns false
   def contains?(value)
     return false if head.nil?
 
-    return true if head.value == value || tail.value == value
+    return true if head.value.eql?(value) || tail.value.eql?(value)
 
     self.each { |node| return true if node.value.eql?(value) }
     false
   end
 
-  # find(value) method
+  # find(value) method 
+  # returns the index of the node containing value, or nil if not found
   def find(value)
     index = 0
     self.each do |node| 
@@ -126,13 +109,15 @@ class LinkedList
   end
 
   # to_s method
+  # The format should be: ( value ) -> ( value ) -> ( value ) -> nil
   def to_s
     values = map { |node| "( #{node.value} )" }
     values << "nil"
     values.join(" -> ")
   end
 
-  # Extra Credit:
+  # Extra Credit: #
+
   # insert_at(value, index) method
   def insert_at(value, index)
     node_before = at(index - 1)
@@ -148,13 +133,18 @@ class LinkedList
     node_before.next_node = node_after
   end
 
-  private
+  # Enumerable method implementation #
 
   def each
+    return self.to_enum unless block_given?
     node = head
     until node.nil?
       yield node
       node = node.next_node
     end
+  end
+
+  def <<(value)
+    append(value)
   end
 end
