@@ -20,7 +20,7 @@ class LinkedList
   def append(value)
     node = Node.new(value)
     return @head = node if head.nil?
-    
+
     if tail.nil?
       @tail = node
       head.next_node = tail
@@ -37,7 +37,7 @@ class LinkedList
     @head = Node.new(value, head)
   end
 
-  # size method 
+  # size method
   # # returns the total number of nodes in the list
   # # (utilizes the enumerable count method)
   def size
@@ -58,11 +58,11 @@ class LinkedList
       return node if i.eql?(list_size + index) # allow negative indexing
       return node if i.eql?(index)
     end
-    nil      
+    nil
   end
 
   # pop method
-  # removes the last element from the list (returns the element removed)
+  # # removes the last element from the list (returns the element removed)
   def pop
     popped = at(-1)
     @head = nil if tail.nil?
@@ -72,7 +72,7 @@ class LinkedList
   end
 
   # contains?(value) method
-  # returns true if the passed in value is in the list, otherwise returns false
+  # # returns true if the passed in value is in the list, otherwise returns false
   def contains?(value)
     return false if head.nil?
 
@@ -82,12 +82,13 @@ class LinkedList
     false
   end
 
-  # find(value) method 
-  # returns the index of the node containing value, or nil if not found
+  # find(value) method
+  # # returns the index of the node containing value, or nil if not found
   def find(value)
     index = 0
-    each do |node| 
+    each do |node|
       return index if node.value.eql?(value)
+
       index += 1
     end
     nil
@@ -97,8 +98,8 @@ class LinkedList
   # # The format should be: ( value ) -> ( value ) -> ( value ) -> nil
   def to_s
     values = map { |node| "( #{node.value} )" }
-    values << "nil"
-    values.join(" -> ")
+    values << 'nil'
+    values.join(' -> ')
   end
 
   # Extra Credit: #
@@ -113,15 +114,15 @@ class LinkedList
       prepend(value)
     else
       node_at_index = at(index)
-      node_before_index = at(index - 1)
-      node = index >= 0 ? Node.new(value, node_at_index) : Node.new(value, node_at_index.next_node) 
-      index >= 0 ? node_before_index.next_node = node : node_at_index.next_node = node
+      node_before_index = node_at_index - 1
+      node = index >= 0 ? Node.new(value, node_at_index) : Node.new(value, node_at_index.next_node)
+      reconnect_nodes(node, node_before_index, node_at_index, index)
     end
     self
   end
 
   # remove_at(index) method
-  # # removes the node at the given index. 
+  # # removes the node at the given index.
   # # returns self (the linked list). returns nil if given an invalid index (out of range)
   def remove_at(index)
     return nil if index > size || index < -size
@@ -136,6 +137,7 @@ class LinkedList
 
   def each
     return to_enum(:each) unless block_given?
+
     node = head
     until node.nil?
       yield node
@@ -155,5 +157,14 @@ class LinkedList
 
   def <<(value)
     append(value)
+  end
+
+  # Private Helper Methods #
+  private
+
+  # Helper method for inserting nodes. Checks if index is negative or positive and then reconnects
+  # # the old nodes to the new node accordingly.
+  def reconnect_nodes(new_node, node_before_index, node_at_index, index)
+    index >= 0 ? node_before_index.next_node = new_node : node_at_index.next_node = new_node
   end
 end
