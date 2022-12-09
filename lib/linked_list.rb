@@ -5,7 +5,9 @@ require_relative 'node'
 # Class for creating linked lists and methods to manipulate them.
 class LinkedList
   include Enumerable
-  attr_accessor :head, :tail
+
+  # head method and tail method
+  attr_reader :head, :tail
 
   def initialize
     @head = nil
@@ -13,39 +15,42 @@ class LinkedList
   end
 
   # append(value) method
+  # # adds a new node containing value to the end of the list
   def append(value)
     node = Node.new(value)
-    return self.head = node if head.nil?
+    return @head = node if head.nil?
     
     if tail.nil?
-      self.tail = node
+      @tail = node
       head.next_node = tail
       return
     end
     tail.next_node = node
-    self.tail = node
+    @tail = node
   end
 
   # prepend(value) method
+  # # adds a new node containing value to the start of the list
   def prepend(value)
-    self.tail = head if tail.nil?
-    self.head = Node.new(value, head)
+    @tail = head if tail.nil?
+    @head = Node.new(value, head)
   end
 
   # size method 
-  # utilizes the enumerable count method
+  # # returns the total number of nodes in the list
+  # # (utilizes the enumerable count method)
   def size
     count
   end
 
   # head method
-  # implemented as attr_accessor
+  # # implemented as attr_reader
 
   # tail method
-  # implemented as attr_accessor
+  # # implemented as attr_reader
 
   # at(index) method
-  # returns the node at the given index
+  # # returns the node at the given index
   def at(index)
     list_size = size
     each_with_index do |node, i|
@@ -59,8 +64,8 @@ class LinkedList
   # removes the last element from the list (returns the element removed)
   def pop
     popped = at(-1)
-    self.head = nil if tail.nil?
-    self.tail = at(-2)
+    @head = nil if tail.nil?
+    @tail = at(-2)
     tail.next_node = nil unless tail.nil?
     popped
   end
@@ -117,7 +122,7 @@ class LinkedList
   # remove_at(index) method
   # # removes the node at the given index. 
   # # returns self (the linked list). returns nil if given an invalid index (out of range)
-  def remove_at!(index)
+  def remove_at(index)
     return nil if index > size || index < -size
 
     node_before_index = at(index - 1)
