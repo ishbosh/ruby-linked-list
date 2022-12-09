@@ -6,7 +6,7 @@ require_relative 'enum_module'
 # Class for creating linked lists and methods to manipulate them.
 class LinkedList
   include Enumerable
-  include EnumMethods
+  include EachNode
 
   # head method and tail method
   # # returns the first and last nodes in the list
@@ -129,6 +129,10 @@ class LinkedList
     node_after_index = at(index).next_node
     node_before_index.next_node = node_after_index
     self
+  end
+
+  def <<(value)
+    append(value)
   end
 
   # Private Helper Methods #

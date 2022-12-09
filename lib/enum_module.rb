@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Enumerable method implementation #
-module EnumMethods
+module EachNode
   def each
     return to_enum(:each) unless block_given?
 
@@ -10,9 +10,5 @@ module EnumMethods
       yield node
       node = node.next_node
     end
-  end
-
-  def <<(value)
-    append(value)
   end
 end
