@@ -24,9 +24,8 @@ class LinkedList
     return @head = node if head.nil?
 
     if tail.nil?
-      @tail = node
-      head.next_node = tail
-      return node
+      head.next_node = node
+      return @tail = node
     end
     tail.next_node = node
     @tail = node
