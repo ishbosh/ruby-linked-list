@@ -12,16 +12,6 @@ module EnumMethods
     end
   end
 
-  def each_with_index
-    return to_enum(:each_with_index) unless block_given?
-
-    index = 0
-    each do |node|
-      yield(node, index)
-      index += 1
-    end
-  end
-
   def <<(value)
     append(value)
   end
