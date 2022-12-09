@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 require_relative 'node'
+require_relative 'enum_module'
 
 # Class for creating linked lists and methods to manipulate them.
 class LinkedList
   include Enumerable
+  include EnumMethods
 
   # head method and tail method
   # # returns the first and last nodes in the list
@@ -113,8 +115,8 @@ class LinkedList
     if index.zero? || index == -size
       prepend(value)
     else
-      node_at_index = at(index)
-      node_before_index = node_at_index - 1
+      node_before_index = previous_node(index)
+      node_at_index = node_before_index.next_node
       node = index >= 0 ? Node.new(value, node_at_index) : Node.new(value, node_at_index.next_node)
       reconnect_nodes(node, node_before_index, node_at_index, index)
     end
@@ -133,32 +135,6 @@ class LinkedList
     self
   end
 
-  # Enumerable method implementation #
-
-  def each
-    return to_enum(:each) unless block_given?
-
-    node = head
-    until node.nil?
-      yield node
-      node = node.next_node
-    end
-  end
-
-  def each_with_index
-    return to_enum(:each_with_index) unless block_given?
-
-    index = 0
-    each do |node|
-      yield(node, index)
-      index += 1
-    end
-  end
-
-  def <<(value)
-    append(value)
-  end
-
   # Private Helper Methods #
   private
 
@@ -166,5 +142,10 @@ class LinkedList
   # # the old nodes to the new node accordingly.
   def reconnect_nodes(new_node, node_before_index, node_at_index, index)
     index >= 0 ? node_before_index.next_node = new_node : node_at_index.next_node = new_node
+  end
+
+  # Helper method for insterting nodes. Gets the node before the node at the index.
+  def previous_node(index)
+    at(index - 1)
   end
 end
