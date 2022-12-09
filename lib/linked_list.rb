@@ -66,7 +66,7 @@ class LinkedList
   # pop method
   # # removes the last element from the list (returns the element removed)
   def pop
-    popped = at(-1)
+    popped = tail
     @head = nil if tail.nil?
     @tail = at(-2)
     tail.next_node = nil unless tail.nil?
@@ -87,11 +87,8 @@ class LinkedList
   # find(value) method
   # # returns the index of the node containing value, or nil if not found
   def find(value)
-    index = 0
-    each do |node|
+    each_with_index do |node, index|
       return index if node.value.eql?(value)
-
-      index += 1
     end
     nil
   end
