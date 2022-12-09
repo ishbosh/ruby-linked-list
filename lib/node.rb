@@ -8,4 +8,15 @@ class Node
     @value = value
     @next_node = next_node
   end
+
+  # Redefine inspect for nodes so they do not list every single nested next node in the inspection
+  def inspect
+    return "#<#{self.class}:0x#{object_id.to_s(16)}, value=#{value}>"
+  end
+
+  # Method to include inspection of all nested next nodes as well
+  def inspect_all
+    return if next_node.nil?
+    return "#<#{self.class}:0x#{object_id.to_s(16)}, value=#{value}, @next_node=#{next_node.inspect_all}>"
+  end
 end
