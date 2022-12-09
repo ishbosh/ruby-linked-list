@@ -19,6 +19,8 @@ The first version of this project was quite messy and I found refactoring it to 
 I realize there are likely more simplifications I could make, and I could have opted to use recursion for some
 methods, but I found my solution to be satisfactory for me.
 
+I opted to keep the comments for each method in the linked list class to show that all requirements for the
+project assignment (listed below) were completed.
 
 - ASSIGNMENT:
 
