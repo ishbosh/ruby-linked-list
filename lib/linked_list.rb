@@ -88,7 +88,7 @@ class LinkedList
   end
 
   # to_s method
-  # The format should be: ( value ) -> ( value ) -> ( value ) -> nil
+  # # The format should be: ( value ) -> ( value ) -> ( value ) -> nil
   def to_s
     values = map { |node| "( #{node.value} )" }
     values << "nil"
@@ -98,8 +98,8 @@ class LinkedList
   # Extra Credit: #
 
   # insert_at(value, index) method
-  # inserts a new node with the provided value at given index. Accepts negative indexes.
-  # returns nil if given an invalid index (out of range)
+  # # inserts a new node with the provided value at given index. Accepts negative indexes.
+  # # returns nil if given an invalid index (out of range)
   def insert_at(value, index)
     return nil if index > size || index < -size
 
@@ -115,10 +115,15 @@ class LinkedList
   end
 
   # remove_at(index) method
-  def remove_at(index)
+  # # removes the node at the given index. 
+  # # returns self (the linked list). returns nil if given an invalid index (out of range)
+  def remove_at!(index)
+    return nil if index > size || index < -size
+
     node_before_index = at(index - 1)
     node_after_index = at(index).next_node
     node_before_index.next_node = node_after_index
+    self
   end
 
   # Enumerable method implementation #
