@@ -7,6 +7,7 @@ class LinkedList
   include Enumerable
 
   # head method and tail method
+  # # returns the first and last nodes in the list
   attr_reader :head, :tail
 
   def initialize
