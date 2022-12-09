@@ -7,8 +7,8 @@ class LinkedList
   include Enumerable
   attr_accessor :head, :tail
 
-  def initialize(head = nil)
-    @head = head
+  def initialize
+    @head = nil
     @tail = at(-1)
   end
 
@@ -98,18 +98,27 @@ class LinkedList
   # Extra Credit: #
 
   # insert_at(value, index) method
+  # inserts a new node with the provided value at given index. Accepts negative indexes.
+  # returns nil if given an invalid index (out of range)
   def insert_at(value, index)
-    node_before = at(index - 1)
-    node_after = at(index)
-    node = Node.new(value, node_after)
-    node_before.next_node = node
+    return nil if index > size || index < -size
+
+    if index.zero? || index == -size
+      prepend(value)
+    else
+      node_at_index = at(index)
+      node_before_index = at(index - 1)
+      node = index >= 0 ? Node.new(value, node_at_index) : Node.new(value, node_at_index.next_node) 
+      index >= 0 ? node_before_index.next_node = node : node_at_index.next_node = node
+    end
+    self
   end
 
   # remove_at(index) method
   def remove_at(index)
-    node_before = at(index - 1)
-    node_after = at(index).next_node
-    node_before.next_node = node_after
+    node_before_index = at(index - 1)
+    node_after_index = at(index).next_node
+    node_before_index.next_node = node_after_index
   end
 
   # Enumerable method implementation #
